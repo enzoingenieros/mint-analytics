@@ -58,8 +58,33 @@ services:
         superset run -h 0.0.0.0 -p 8088 --with-threads --reload
       "
 
+  # 7. Metabase para visualización y análisis de datos
+  metabase:
+    image: metabase/metabase:latest
+    restart: unless-stopped
+    environment:
+      # Configuración de la base de datos de aplicación de Metabase
+      - MB_DB_TYPE=postgres
+      - MB_DB_DBNAME=metabase_app
+      - MB_DB_PORT=5432
+      - MB_DB_USER=${POSTGRES_USER}
+      - MB_DB_PASS=${POSTGRES_PASSWORD}
+      - MB_DB_HOST=db
+      # Configuración adicional
+      - JAVA_TIMEZONE=Europe/Madrid
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - metabase_data:/metabase.db
+    networks:
+      - default
+
 volumes:
   pgdata:
     # Define el volumen nombrado para la persistencia de datos
   superset_home:
     # Volumen para datos de Superset
+  metabase_data:
+    # Volumen para datos de Metabase

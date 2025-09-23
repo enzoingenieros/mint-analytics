@@ -44,6 +44,8 @@ docker compose up -d
 
 Este comando:
 - Levanta un contenedor PostgreSQL en el puerto 5432
+- Levanta Apache Superset en el puerto 8088 para visualización y dashboards
+- Levanta Metabase en el puerto 3000 para análisis de datos
 - Restaura automáticamente el backup de la base de datos desde `backups/microges.backup`
 - La base de datos estará disponible con las siguientes credenciales:
   - **Host:** localhost
@@ -76,6 +78,12 @@ Para eliminar también los volúmenes (esto borrará todos los datos):
 docker compose down -v
 ```
 
+## Acceso a las aplicaciones
+
+- **PostgreSQL:** `localhost:5432`
+- **Apache Superset:** `http://localhost:8088` (usuario: `admin`, contraseña: `admin`)
+- **Metabase:** `http://localhost:3000` (configurar en el primer acceso)
+
 ## Estructura del proyecto
 
 ```
@@ -85,6 +93,7 @@ mint-analytics/
 ├── init/              # Scripts de inicialización
 │   └── restore.sh     # Script para restaurar el backup
 ├── compose.yml        # Configuración de Docker Compose
+├── .env               # Variables de entorno (no versionado)
 └── README.md          # Este archivo
 ```
 
