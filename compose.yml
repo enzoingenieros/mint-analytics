@@ -14,7 +14,7 @@ services:
 
     # 4. Expone el puerto de PostgreSQL al exterior (host)
     ports:
-      - "5432:5432"
+      - "5440:5432"
 
     # 5. Define los volúmenes para persistir datos y montar archivos
     volumes:

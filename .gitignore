@@ -1,2 +1,3 @@
 backups/microges.backup
 .env
+.DS_Store
