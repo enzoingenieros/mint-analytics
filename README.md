@@ -18,7 +18,13 @@ cd mint-analytics
 
 ### 2. Configuración de la base de datos
 
-El proyecto incluye un backup de la base de datos PostgreSQL que se restaura automáticamente al iniciar el contenedor.
+**Importante:** Debes copiar el archivo de backup de la base de datos `microges.backup` en la carpeta `backups/`:
+
+```bash
+cp /ruta/a/tu/microges.backup backups/microges.backup
+```
+
+El backup de la base de datos PostgreSQL se restaurará automáticamente al iniciar el contenedor.
 
 ### 3. Levantar el proyecto
 
