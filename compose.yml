@@ -9,7 +9,6 @@ services:
     restart: unless-stopped
 
     # 3. Define las variables de entorno para la base de datos
-    # ¡IMPORTANTE! Cambia estos valores por tus propias credenciales.
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

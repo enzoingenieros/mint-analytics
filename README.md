@@ -16,7 +16,17 @@ git clone git@github.com:enzoingenieros/mint-analytics.git
 cd mint-analytics
 ```
 
-### 2. Configuración de la base de datos
+### 2. Configuración del entorno
+
+Crea un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno:
+
+```bash
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=microges
+```
+
+### 3. Configuración de la base de datos
 
 **Importante:** Debes copiar el archivo de backup de la base de datos `microges.backup` en la carpeta `backups/`:
 
@@ -26,7 +36,7 @@ cp /ruta/a/tu/microges.backup backups/microges.backup
 
 El backup de la base de datos PostgreSQL se restaurará automáticamente al iniciar el contenedor.
 
-### 3. Levantar el proyecto
+### 4. Levantar el proyecto
 
 ```bash
 docker compose up -d
@@ -42,13 +52,13 @@ Este comando:
   - **Usuario:** postgres
   - **Contraseña:** postgres
 
-### 4. Verificar el estado
+### 5. Verificar el estado
 
 ```bash
 docker compose ps
 ```
 
-### 5. Ver logs
+### 6. Ver logs
 
 ```bash
 docker compose logs -f
