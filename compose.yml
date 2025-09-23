@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  db:
+    # 1. Especifica la imagen y versión de PostgreSQL
+    image: postgres:16
+
+    # 2. Reinicia el contenedor automáticamente si falla
+    restart: unless-stopped
+
+    # 3. Define las variables de entorno para la base de datos
+    # ¡IMPORTANTE! Cambia estos valores por tus propias credenciales.
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+    # 4. Expone el puerto de PostgreSQL al exterior (host)
+    ports:
+      - "5432:5432"
+
+    # 5. Define los volúmenes para persistir datos y montar archivos
+    volumes:
+      # Persiste los datos de la base de datos para que no se pierdan al reiniciar
+      - pgdata:/var/lib/postgresql/data
+      # Monta la carpeta de backups dentro del contenedor (solo lectura)
+      - ./backups:/backups:ro
+      # Monta el script de inicialización en el directorio especial de Postgres
+      - ./init:/docker-entrypoint-initdb.d
+
+  # 6. Apache Superset para visualización y dashboards
+  superset:
+    image: apache/superset:3.0.0
+    restart: unless-stopped
+    environment:
+      - SUPERSET_SECRET_KEY=your_very_secret_key_replace_this_in_production_123456789
+      - JWT_SECRET_KEY=clave_jwt_muy_segura_para_consultas_asincronas_cambiar_en_produccion_123456789
+      - DATABASE_DB=${POSTGRES_DB}
+      - DATABASE_HOST=db
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_USER=${POSTGRES_USER}
+      - DATABASE_PORT=5432
+      - DATABASE_DIALECT=postgresql
+      - SUPERSET_LOAD_EXAMPLES=no
+      
+    ports:
+      - "8088:8088"
+    depends_on:
+      - db
+    volumes:
+      - superset_home:/app/superset_home
+    networks:
+      - default
+    command: >
+      sh -c "
+        superset db upgrade &&
+        superset fab create-admin --username admin --firstname Admin --lastname User --email admin@example.com --password admin || true &&
+        superset init &&
+        superset run -h 0.0.0.0 -p 8088 --with-threads --reload
+      "
+
+volumes:
+  pgdata:
+    # Define el volumen nombrado para la persistencia de datos
+  superset_home:
+    # Volumen para datos de Superset
