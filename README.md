@@ -44,7 +44,6 @@ docker compose up -d
 
 Este comando:
 - Levanta un contenedor PostgreSQL en el puerto 5432
-- Levanta Apache Superset en el puerto 8088 para visualización y dashboards
 - Levanta Metabase en el puerto 3000 para análisis de datos
 - Restaura automáticamente el backup de la base de datos desde `backups/microges.backup`
 - La base de datos estará disponible con las siguientes credenciales:
@@ -81,8 +80,22 @@ docker compose down -v
 ## Acceso a las aplicaciones
 
 - **PostgreSQL:** `localhost:5432`
-- **Apache Superset:** `http://localhost:8088` (usuario: `admin`, contraseña: `admin`)
-- **Metabase:** `http://localhost:3000` (configurar en el primer acceso)
+- **Metabase:** `http://localhost:3000` (requiere configuración manual en el primer acceso)
+
+  > **Nota sobre Metabase:** La versión open source de Metabase no soporta configuración automática mediante variables de entorno para:
+  > - Usuario administrador inicial (se crea manualmente en el primer acceso)
+  > - Conexión a la base de datos de análisis (se configura manualmente desde la interfaz web)
+  >
+  > En el primer acceso deberás:
+  > 1. Crear un usuario administrador
+  > 2. Configurar la conexión a PostgreSQL con:
+  >    - Host: `db` (nombre del servicio Docker)
+  >    - Puerto: `5432`
+  >    - Base de datos: `microges`
+  >    - Usuario: `microges`
+  >    - Contraseña: `secret`
+
+~~**Apache Superset:** `http://localhost:8088`~~ *(DEPRECADO - Se recomienda usar Metabase)*
 
 ## Estructura del proyecto
 
