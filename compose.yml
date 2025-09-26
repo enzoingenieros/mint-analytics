@@ -26,35 +26,35 @@ services:
       - ./init:/docker-entrypoint-initdb.d
 
   # 6. Apache Superset para visualización y dashboards (DESACTIVADO - SECUNDARIO)
-  # superset:
-  #   image: apache/superset:3.0.0
-  #   restart: unless-stopped
-  #   environment:
-  #     - SUPERSET_SECRET_KEY=your_very_secret_key_replace_this_in_production_123456789
-  #     - JWT_SECRET_KEY=clave_jwt_muy_segura_para_consultas_asincronas_cambiar_en_produccion_123456789
-  #     - DATABASE_DB=${POSTGRES_DB}
-  #     - DATABASE_HOST=db
-  #     - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
-  #     - DATABASE_USER=${POSTGRES_USER}
-  #     - DATABASE_PORT=5432
-  #     - DATABASE_DIALECT=postgresql
-  #     - SUPERSET_LOAD_EXAMPLES=no
-  #
-  #   ports:
-  #     - "8088:8088"
-  #   depends_on:
-  #     - db
-  #   volumes:
-  #     - superset_home:/app/superset_home
-  #   networks:
-  #     - default
-  #   command: >
-  #     sh -c "
-  #       superset db upgrade &&
-  #       superset fab create-admin --username admin --firstname Admin --lastname User --email admin@example.com --password admin || true &&
-  #       superset init &&
-  #       superset run -h 0.0.0.0 -p 8088 --with-threads --reload
-  #     "
+  superset:
+    image: apache/superset:3.0.0
+    restart: unless-stopped
+    environment:
+      - SUPERSET_SECRET_KEY=your_very_secret_key_replace_this_in_production_123456789
+      - JWT_SECRET_KEY=clave_jwt_muy_segura_para_consultas_asincronas_cambiar_en_produccion_123456789
+      - DATABASE_DB=${POSTGRES_DB}
+      - DATABASE_HOST=db
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_USER=${POSTGRES_USER}
+      - DATABASE_PORT=5432
+      - DATABASE_DIALECT=postgresql
+      - SUPERSET_LOAD_EXAMPLES=no
+  
+    ports:
+      - "8088:8088"
+    depends_on:
+      - db
+    volumes:
+      - superset_home:/app/superset_home
+    networks:
+      - default
+    command: >
+      sh -c "
+        superset db upgrade &&
+        superset fab create-admin --username admin --firstname Admin --lastname User --email admin@example.com --password admin || true &&
+        superset init &&
+        superset run -h 0.0.0.0 -p 8088 --with-threads --reload
+      "
 
   # 7. Metabase para visualización y análisis de datos
   metabase:
